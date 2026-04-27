@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "cookie": "^0.6.0"
+  }
+}
