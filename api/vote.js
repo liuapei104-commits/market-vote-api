@@ -16,16 +16,15 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { itemId } = req.body;
+    const { candidateId } = req.body;
 
-    if (!itemId) {
-      return res.status(400).json({ message: "缺少 itemId" });
+    if (!candidateId) {
+      return res.status(400).json({ message: "缺少 candidateId" });
     }
 
-    const docRef = db.collection("votes").doc(itemId);
+    const docRef = db.collection("votes").doc(candidateId);
 
     await db.runTransaction(async (transaction) => {
-      // ✅ 先讀
       const doc = await transaction.get(docRef);
 
       let newCount = 1;
@@ -34,7 +33,6 @@ export default async function handler(req, res) {
         newCount = (doc.data().count || 0) + 1;
       }
 
-      // ✅ 再寫（不能中間再讀）
       transaction.set(docRef, { count: newCount });
     });
 
