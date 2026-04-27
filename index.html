@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026臺北傳統市場節｜短影音人氣投票</title>
+
+  <style>
+    .market-vote-page,
+    .market-vote-page * {
+      box-sizing: border-box;
+    }
+
+    .market-vote-page {
+      width: 100%;
+      margin: 0;
+      padding: 36px 16px 60px;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+      color: #241713;
+    }
+
+    .market-vote-wrap {
+      width: min(88vw, 1360px);
+      margin: 0 auto;
+    }
+
+    .vote-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .info-card {
+      background: #fff;
+      border: 2px solid #241713;
+      border-radius: 18px;
+      padding: 20px 22px;
+      box-shadow: 5px 5px 0 #241713;
+    }
+
+    .info-title {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .info-text {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #241713;
+    }
+
+    .login-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: #fff;
+      border: 2px solid #241713;
+      border-radius: 22px;
+      padding: 22px 24px;
+      margin-bottom: 34px;
+      box-shadow: 5px 5px 0 rgba(36, 23, 19, 0.25);
+    }
+
+    .login-title {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .login-text {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.7;
+      color: #6f625b;
+    }
+
+    .btn-line {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 220px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      background: #06c755;
+      color: #fff !important;
+      font-size: 18px;
+      font-weight: 900;
+      text-decoration: none !important;
+      white-space: nowrap;
+      border: none;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+
+    .vote-card {
+      overflow: hidden;
+      background: #fff;
+      border: 2px solid #241713;
+      border-radius: 24px;
+      box-shadow: 7px 7px 0 #241713;
+    }
+
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .vote-card-body {
+      padding: 26px 24px 24px;
+    }
+
+    .market-tag {
+      display: inline-block;
+      margin: 0 0 18px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #ffe18a;
+      color: #d43618;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .work-title {
+      display: block;
+      margin: 0 0 16px;
+      padding: 0;
+      font-size: 23px;
+      font-weight: 900;
+      line-height: 1.45;
+      letter-spacing: 0.02em;
+      color: #111;
+    }
+
+    .work-desc {
+      display: block;
+      margin: 0 0 24px;
+      padding: 0;
+      font-size: 17px;
+      line-height: 1.9;
+      letter-spacing: 0.03em;
+      color: #746b68;
+    }
+
+    .vote-count {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin: 0 0 18px;
+      font-weight: 900;
+      color: #241713;
+    }
+
+    .vote-num {
+      font-size: 34px;
+      color: #b53a22;
+      line-height: 1;
+    }
+
+    .vote-unit {
+      font-size: 17px;
+      color: #241713;
+    }
+
+    .vote-btn {
+      width: 100%;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 999px;
+      background: #241713;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .vote-rules {
+      margin-top: 42px;
+      padding: 26px 30px;
+      background: #fff7dd;
+      border: 2px dashed #9a6b22;
+      border-radius: 22px;
+    }
+
+    .vote-rules h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .vote-rules ol {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    .vote-rules li {
+      margin-bottom: 8px;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .vote-footer {
+      margin-top: 34px;
+      text-align: center;
+      font-size: 14px;
+      color: #756658;
+    }
+
+    @media (max-width: 900px) {
+      .vote-info,
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .login-box {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .btn-line {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="market-vote-page">
+    <main class="market-vote-wrap">
+
+      <section class="vote-info">
+        <div class="info-card">
+          <strong class="info-title">投票期間</strong>
+          <p class="info-text">2026/4/30(四)－2026/5/8(五) 23:59</p>
+        </div>
+
+        <div class="info-card">
+          <strong class="info-title">投票方式</strong>
+          <p class="info-text">使用 LINE 登入後，每人每日可投 3 票。</p>
+        </div>
+
+        <div class="info-card">
+          <strong class="info-title">票數說明</strong>
+          <p class="info-text">票數將依系統紀錄為準，主辦單位保留審核權利。</p>
+        </div>
+      </section>
+
+      <section class="login-box">
+        <div>
+          <h2 class="login-title">請先使用 LINE 綁定投票身分</h2>
+          <p class="login-text">登入後系統會記錄 LINE User ID，避免重複灌票，並計算每日投票次數。</p>
+        </div>
+
+        <a class="btn-line" href="/api/auth/line">
+          使用 LINE 登入投票
+        </a>
+      </section>
+
+      <section class="video-grid" id="videoList">
+
+        <article class="vote-card" data-video-id="001">
+          <div class="video-frame">
+            <iframe src="https://www.youtube.com/embed/CqUfn7uGd98" title="挑戰臺北前五！這碗麵真的有神功？" allowfullscreen></iframe>
+          </div>
+
+          <div class="vote-card-body">
+            <h3 class="work-title">挑戰臺北前五！這碗麵真的有神功？</h3>
+            <p class="work-desc">本作品以「武俠喜劇」風格，記錄臺北市公有信義市場內知名的「范姜牛肉麵」。</p>
+
+            <div class="vote-count">
+              <span class="vote-num" id="votes-001">0</span>
+              <span class="vote-unit">票</span>
+            </div>
+
+            <button class="vote-btn" onclick="vote('001')">投給這支影片</button>
+          </div>
+        </article>
+
+        <article class="vote-card" data-video-id="002">
+          <div class="video-frame">
+           <iframe  src="https://www.youtube.com/embed/7NUtsEH7kHQ"  title="群雄爭霸之南門尚青對決鯊特使篇" allowfullscreen></iframe>
+          </div>
+
+          <div class="vote-card-body">
+            <h3 class="work-title">群雄爭霸之南門尚青對決鯊特使篇</h3>
+            <p class="work-desc">如果市場美食是群雄爭霸的武林，那最終的評判者會是誰？而度量的標準又是什麼？</p>
+
+            <div class="vote-count">
+              <span class="vote-num" id="votes-002">0</span>
+              <span class="vote-unit">票</span>
+            </div>
+
+            <button class="vote-btn" onclick="vote('002')">投給這支影片</button>
+          </div>
+        </article>
+
+        <article class="vote-card" data-video-id="003">
+          <div class="video-frame">
+            <iframe src="https://www.youtube.com/embed/nThomwQKEak" title="王子的武林" allowfullscreen></iframe>
+          </div>
+
+          <div class="vote-card-body">
+            <h3 class="work-title">王子的武林</h3>
+            <p class="work-desc">配合這次市場江湖主題，將日常的水果上架、備料等工作，轉化為高手過招的畫面。</p>
+
+            <div class="vote-count">
+              <span class="vote-num" id="votes-003">0</span>
+              <span class="vote-unit">票</span>
+            </div>
+
+            <button class="vote-btn" onclick="vote('003')">投給這支影片</button>
+          </div>
+        </article>
+
+      </section>
+
+      <section class="vote-rules">
+        <h2>投票注意事項</h2>
+        <ol>
+          <li>參與投票者須使用 LINE 登入並完成身分綁定。</li>
+          <li>每個 LINE 帳號每日最多可投 3 票；3 票使用完畢後，須等隔日 00:00 後才可再次投票。</li>
+          <li>如有異常票數、機器人操作、惡意灌票或其他影響公平性之行為，主辦單位保留取消票數與參賽資格之權利。</li>
+          <li>活動票數與得獎結果依後台系統紀錄及主辦單位公告為準。</li>
+        </ol>
+      </section>
+
+      <footer class="vote-footer">
+        2026臺北傳統市場節｜市場江湖・一鏡成名短影音人氣投票
+      </footer>
+
+    </main>
+  </div>
+
+  <script>
+    async function loadVotes() {
+      try {
+        const res = await fetch('/api/votes');
+        const data = await res.json();
+
+        data.forEach(item => {
+          const id = item.videoId || item.candidateId || item.id;
+          const count = item.count || 0;
+          const target = document.getElementById(`votes-${id}`);
+          if (target) target.textContent = count;
+        });
+      } catch (err) {
+        console.warn('目前無法讀取票數，請確認後端 API 是否已建立。', err);
+      }
+    }
+
+    async function vote(videoId) {
+      try {
+        const res = await fetch('/api/vote', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ candidateId: videoId })
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          alert(result.message || '投票失敗，請稍後再試。');
+          return;
+        }
+
+        alert('投票成功！感謝你支持喜歡的市場作品。');
+        loadVotes();
+      } catch (err) {
+        alert('目前無法完成投票，請稍後再試。');
+      }
+    }
+
+    loadVotes();
+  </script>
+</body>
+</html>
