@@ -296,6 +296,9 @@
         <div>
           <h2 class="login-title">請先使用 LINE 綁定投票身分</h2>
           <p class="login-text">登入後系統會記錄 LINE User ID，避免重複灌票，並計算每日投票次數。</p>
+
+          <!-- 🔥 新增這一行 -->
+          <div class="login-status"></div>
         </div>
 
         <a class="btn-line" href="/api/auth/line">
@@ -850,7 +853,35 @@
       }
     }
 
-    loadVotes();
+async function checkLogin() {
+  try {
+    const res = await fetch('/api/me', {
+      credentials: 'include'
+    });
+
+    const data = await res.json();
+
+    const btn = document.querySelector('.btn-line');
+    const status = document.querySelector('.login-status');
+
+    if (data.loggedIn) {
+      btn.textContent = '開始投票';
+      btn.style.background = '#999';
+      btn.href = '#videoList';
+
+      status.innerHTML = `👤 ${data.name || '使用者'} 已登入`;
+    } else {
+      btn.textContent = '使用 LINE 登入投票';
+      btn.href = '/api/auth/line';
+    }
+
+  } catch (err) {
+    console.warn('登入狀態取得失敗');
+  }
+}
+
+checkLogin();   // 🔥 新增
+loadVotes();
   </script>
 </body>
 </html>
