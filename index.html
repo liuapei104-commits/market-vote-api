@@ -891,6 +891,28 @@
   </div>
 
   <script>
+    const VOTE_DEADLINE = new Date('2026-05-08T23:59:00+08:00');
+
+function isVoteClosed() {
+  return new Date() > VOTE_DEADLINE;
+}
+
+function closeVoteUI() {
+  if (!isVoteClosed()) return;
+
+  document.querySelectorAll('.vote-btn').forEach(btn => {
+    btn.disabled = true;
+    btn.textContent = '投票已截止';
+    btn.style.background = '#999';
+    btn.style.cursor = 'not-allowed';
+  });
+
+  const loginTitle = document.querySelector('.login-title');
+
+  if (loginTitle) {
+    loginTitle.textContent = '投票已於 2026/5/8 23:59 截止';
+  }
+}
     async function loadVotes() {
       try {
         const res = await fetch('/api/votes');
@@ -907,8 +929,15 @@
       }
     }
 
-    async function vote(videoId) {
-      try {
+async function vote(videoId) {
+
+  if (isVoteClosed()) {
+    alert('投票已截止');
+    closeVoteUI();
+    return;
+  }
+
+  try {
         const res = await fetch('/api/vote', {
           method: 'POST',
           credentials: 'include',
@@ -957,8 +986,9 @@ async function checkLogin() {
   }
 }
 
-checkLogin();   // 🔥 新增
+checkLogin();
 loadVotes();
+closeVoteUI();
   </script>
 </body>
 </html>
