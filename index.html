@@ -56,6 +56,24 @@
       color: #241713;
     }
 
+    .countdown-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #241713;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.countdown-box strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #ffe18a;
+}
+
     .login-box {
       display: flex;
       align-items: center;
@@ -284,6 +302,10 @@
         <div class="info-card">
           <strong class="info-title">投票期間</strong>
           <p class="info-text">2026/4/30(四)－2026/5/8(五) 23:59</p>
+           <div class="countdown-box">
+           <span>距離投票截止</span>
+           <strong id="voteCountdown">計算中...</strong>
+         </div>
         </div>
 
         <div class="info-card">
@@ -894,7 +916,7 @@
     const VOTE_DEADLINE = new Date('2026-05-08T23:59:00+08:00');
 
 function isVoteClosed() {
-  return new Date() > VOTE_DEADLINE;
+  return new Date() >= VOTE_DEADLINE;
 }
 
 function closeVoteUI() {
@@ -913,6 +935,28 @@ function closeVoteUI() {
     loginTitle.textContent = '投票已於 2026/5/8 23:59 截止';
   }
 }
+    
+function updateCountdown() {
+  const target = document.getElementById('voteCountdown');
+  if (!target) return;
+
+  const now = new Date();
+  const diff = VOTE_DEADLINE - now;
+
+  if (diff <= 0) {
+    target.textContent = '投票已截止';
+    closeVoteUI();
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  target.textContent = `${days}天 ${hours}時 ${minutes}分 ${seconds}秒`;
+}
+   
     async function loadVotes() {
       try {
         const res = await fetch('/api/votes');
@@ -989,6 +1033,8 @@ async function checkLogin() {
 checkLogin();
 loadVotes();
 closeVoteUI();
+updateCountdown();
+setInterval(updateCountdown, 1000);
   </script>
 </body>
 </html>
